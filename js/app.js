@@ -198,7 +198,8 @@ $(function () {
                 });
                 $(document).mouseup(function (e) {
                     octopus.up(e, block);
-                })
+                });
+                return false;
             }); //移动大方块
 
             this.blockList.on({
