@@ -250,7 +250,6 @@ $(function () {
         },
 
         render: _.debounce(function () {
-            // Cache vars for use in forEach() callback (performance)
             var blockList = this.blockList,
                 blockTemplate = this.blockTemplate;
 
