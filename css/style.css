@@ -26,8 +26,7 @@ body {
     text-align: right;
     width: 200px;
     height: 200px;
-    margin: .5em;
-    position: relative;
+    position: absolute;
     border: 2px solid #000000;
 }
 
@@ -38,6 +37,7 @@ body {
     padding: 0 0.25em;
     text-decoration: none;
     border-radius: 3px;
+    z-index: -1;
 }
 
 .remove-block:hover{
