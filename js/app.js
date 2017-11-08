@@ -59,7 +59,7 @@ $(function () {
             clickedBlock.isDrag = true;
             mouseInitX = e.pageX - clickedBlock.left;
             mouseInitY = e.pageY - clickedBlock.top;
-             // view.render();
+            // view.render();
         },
         //移动下边框位置
         Bdown: function (e, block) {
@@ -88,7 +88,7 @@ $(function () {
 
         move: function (e, block) {
             var clickedBlock = data.blocks[block.id - 1];
-            if(clickedBlock.isDrag === true){
+            if (clickedBlock.isDrag === true) {
                 var moveX = e.pageX - mouseInitX;
                 var moveY = e.pageY - mouseInitY;
                 var Xmax = $(window).width() - clickedBlock.width;
@@ -108,11 +108,10 @@ $(function () {
 
                 view.render();
 
-            }else if (clickedBlock.RisDrag === true) {
+            } else if (clickedBlock.RisDrag === true) {
                 var RX = e.pageX - RInitX;
-                var RXmax = $(window).width() - 10;
 
-                clickedBlock.resizeRLeft = Math.min(RXmax, Math.max(0, RX));
+                clickedBlock.resizeRLeft = Math.max(clickedBlock.left + 50, RX);
 
                 clickedBlock.width = Math.max(50, clickedBlock.resizeRLeft - clickedBlock.left + 10);
 
@@ -120,11 +119,10 @@ $(function () {
 
                 view.render();
 
-            }else if(clickedBlock.BisDrag === true){
+            } else if (clickedBlock.BisDrag === true) {
                 var BY = e.pageY - BInitY;
-                var BYmax = $(window).height() - 10;
 
-                clickedBlock.resizeBTop = Math.min(BYmax, Math.max(0, BY));
+                clickedBlock.resizeBTop = Math.max(clickedBlock.top + 50, BY);
 
                 clickedBlock.height = Math.max(50, clickedBlock.resizeBTop - clickedBlock.top + 10);
 
@@ -132,14 +130,12 @@ $(function () {
 
                 view.render();
 
-            }else if(clickedBlock.RBisDrag === true){
+            } else if (clickedBlock.RBisDrag === true) {
                 var RBX = e.pageX - RBInitX;
                 var RBY = e.pageY - RBInitY;
-                var RBXmax = $(window).width() - 20;
-                var RBYmax = $(window).height() - 20;
 
-                clickedBlock.resizeRBTop = Math.min(RBYmax, Math.max(0, RBY));
-                clickedBlock.resizeRBLeft = Math.min(RBXmax, Math.max(0, RBX));
+                clickedBlock.resizeRBTop = Math.max(clickedBlock.top + 50, RBY);
+                clickedBlock.resizeRBLeft = Math.max(clickedBlock.left + 50, RBX);
 
                 clickedBlock.width = Math.max(50, clickedBlock.resizeRBLeft - clickedBlock.left + 20);
                 clickedBlock.height = Math.max(50, clickedBlock.resizeRBTop - clickedBlock.top + 20);
@@ -155,6 +151,7 @@ $(function () {
             var clickedBlock = data.blocks[block.id - 1];
             clickedBlock.isDrag = false;
             clickedBlock.RisDrag = false;
+            clickedBlock.resizeRLeft = clickedBlock.left + clickedBlock.width - 10;
             clickedBlock.BisDrag = false;
             clickedBlock.RBisDrag = false;
 
@@ -193,7 +190,7 @@ $(function () {
             }); //删除大方块
 
 
-            this.blockList.on('mousedown','.block', function (e) {
+            this.blockList.on('mousedown', '.block', function (e) {
                 var block = $(this).data();
                 octopus.mousedownBlock(e, block);
                 $(document).mousemove(function (e) {
@@ -250,7 +247,6 @@ $(function () {
         },
 
         render: _.debounce(function () {
-            // Cache vars for use in forEach() callback (performance)
             var blockList = this.blockList,
                 blockTemplate = this.blockTemplate;
 
@@ -265,9 +261,12 @@ $(function () {
                     .css({'width': block.width + 'px', 'height': block.height + 'px', 'background': block.ranColor});
                 $("div[data-id=" + block.id + "] > .resizeR").offset({top: block.resizeRTop, left: block.resizeRLeft});
                 $("div[data-id=" + block.id + "] > .resizeB").offset({top: block.resizeBTop, left: block.resizeBLeft});
-                $("div[data-id=" + block.id + "] > .resizeRB").offset({top: block.resizeRBTop, left: block.resizeRBLeft});
+                $("div[data-id=" + block.id + "] > .resizeRB").offset({
+                    top: block.resizeRBTop,
+                    left: block.resizeRBLeft
+                });
             });
-        },50)
+        }, 50)
     };
 
     octopus.init();
